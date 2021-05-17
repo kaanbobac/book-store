@@ -17,6 +17,7 @@ import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
+import kaan.demo.spring.book.store.dao.Book;
 import kaan.demo.spring.book.store.dao.CsvBookDao;
 import kaan.demo.spring.book.store.pojo.CsvBook;
 
@@ -40,16 +41,25 @@ public class CsvLoader {
 	    reader.close();
 	    return books;
 	}
+	private List<Book> mapper(List<CsvBook> books){
+		List<Book> newBooks = new ArrayList<Book>();
+		for(CsvBook book :  books) {
+			String amount = book.getAmount().replace(",", "");
+			newBooks.add(Book.builder().id(Integer.parseInt(book.getId()))
+					.amount(Integer.parseInt(amount)).build());
+		}
+		return newBooks;
+	}
 	@EventListener(ApplicationReadyEvent.class)
 	public void loadCsv() {
 		try {
-			dao.setCsvBooks(readCsv());
+			dao.setCsvBooks(mapper(readCsv()));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	public List<CsvBook> queryAll(){
+	public List<Book> queryAll(){
 		return dao.getCsvBooks();
 	}
 }

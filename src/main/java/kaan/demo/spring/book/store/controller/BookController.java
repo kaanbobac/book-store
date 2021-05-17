@@ -1,22 +1,24 @@
 package kaan.demo.spring.book.store.controller;
 
-import java.util.List;
+import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import kaan.demo.spring.book.store.pojo.CsvBook;
+import kaan.demo.spring.book.store.dao.Book;
 import kaan.demo.spring.book.store.service.CsvLoader;
 
-@RestController
+@Controller
 public class BookController {
 	@Autowired
 	private CsvLoader csvLoader;
-	@GetMapping("/")
-	private ResponseEntity<List<CsvBook>> queryAllBooks() {
-		return new ResponseEntity<List<CsvBook>>(csvLoader.queryAll(),HttpStatus.OK);
+	@RequestMapping("/")
+	private String  queryAllBooks(Model model) {
+		 model.addAttribute("books", csvLoader.queryAll());
+		 model.addAttribute("byAmount", Comparator.comparing(Book::getAmount));
+		 return "books";
 	}
 }
+ 

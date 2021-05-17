@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Home page</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+      	<div th:if="${ not#lists.isEmpty(books)}">
+      	<h1>List of Books (number of books: <th:block th:text="${#lists.size(books)}">100</th:block>)</h1>
+          <table>
+            <tr>
+              <th>Id</th>
+              <th>Amount</th>
+            </tr>
+            <tr th:each="book : ${books}">
+              <td th:text="${book.id}">Id</td>
+              <td th:text="${book.amount}">Amount</td>
+            </tr>
+          <table>
+        </div>
+        <h1>Sorted of Books (number of books: <th:block th:text="${#lists.size(books)}">100</th:block>)</h1>
+          <table>
+            <tr>
+              <th>Id</th>
+              <th>Amount</th>
+            </tr>
+            <tr th:each="book : ${#lists.sort(books, byAmount)}">
+              <td th:text="${book.id}">Id</td>
+              <td th:text="${book.amount}">Amount</td>
+            </tr>
+          <table>
+    </body>
+</html>
