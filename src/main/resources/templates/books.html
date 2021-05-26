@@ -1,34 +1,57 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{task/layout}">
     <head>
-        <title>Home page</title>
+        <title>Book List</title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style type="text/css">
+        	#books {
+  				font-family: Arial, Helvetica, sans-serif;
+  				border-collapse: collapse;
+  				width: 40%;
+			}
+
+			#books td, #customers th {
+  				border: 1px solid #ddd;
+  				padding: 8px;
+			}
+
+		#books tr:nth-child(even){background-color: #f2f2f2;}
+
+		#books tr:hover {background-color: #ddd;}
+
+		#books th {
+		  padding-top: 12px;
+		  padding-bottom: 12px;
+		  text-align: mid;
+		  background-color: #4CAF50;
+		  color: white;
+		}
+    	</style>
     </head>
     <body>
-      	<div th:if="${ not#lists.isEmpty(books)}">
-      	<h1>List of Books (number of books: <th:block th:text="${#lists.size(books)}">100</th:block>)</h1>
-          <table>
-            <tr>
-              <th>Id</th>
-              <th>Amount</th>
-            </tr>
-            <tr th:each="book : ${books}">
-              <td th:text="${book.id}">Id</td>
-              <td th:text="${book.amount}">Amount</td>
-            </tr>
+      	<div layout:fragment="content">
+      	<h3 class="text-info text-center mt-20">List of Books (number of books: <th:block th:text="${#lists.size(books)}">100</th:block>)</h3>
+          <table id="books">
+            <thead>
+        		<tr>
+            		<!-- sorting control via employee id -->
+            		
+            		<th>
+                		<a th:href="@{'/sortbyId'}">Book ID</a>
+            		</th>
+            		<th>
+                		<a th:href="@{'/sortbyAmount'}">Amount</a>
+            		</th>
+        		</tr>
+        	</thead>
+        	<tbody>
+            	<tr th:each="book : ${books}">
+              	<td th:text="${book.id}">Id</td>
+              	<td th:text="${book.amount}">Amount</td>
+            	</tr>
+            </tbody>
           <table>
         </div>
-        <h1>Sorted of Books (number of books: <th:block th:text="${#lists.size(books)}">100</th:block>)</h1>
-          <table>
-            <tr>
-              <th>Id</th>
-              <th>Amount</th>
-            </tr>
-            <tr th:each="book : ${#lists.sort(books, byAmount)}">
-              <td th:text="${book.id}">Id</td>
-              <td th:text="${book.amount}">Amount</td>
-            </tr>
-          <table>
     </body>
 </html>
